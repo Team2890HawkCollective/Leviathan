@@ -21,7 +21,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 @SuppressWarnings("unused")
 public final class Constants {
     // Kinematics measurement for Swerve Drive.
-    public static final double DISTANCE_FROM_CENTER = 0.175; // meters
+    public static final double DISTANCE_FROM_CENTER = 0.425; // meters
     public static final double RADIUS_OF_WHEEL = 0.05013; // meters
 
     // Note: The drive encoder uses 1024 ticks per revolution and is accessed by getPosition()
