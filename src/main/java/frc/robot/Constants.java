@@ -6,6 +6,10 @@ package frc.robot;
 
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -20,8 +24,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
  */
 @SuppressWarnings("unused")
 public final class Constants {
+
     // Kinematics measurement for Swerve Drive.
-    public static final double DISTANCE_FROM_CENTER = 0.425; // meters
+    public static final double DISTANCE_FROM_CENTER = 0.175; // meters
     public static final double RADIUS_OF_WHEEL = 0.05013; // meters
 
     // Note: The drive encoder uses 1024 ticks per revolution and is accessed by getPosition()
@@ -58,15 +63,15 @@ public final class Constants {
     public static final int RIGHT_BACK_SPARK_MAX_ID = 7;
 
     // CAN IDs for Intake
-    public static final int LEFT_INTAKE_ID = 9;
-    public static final int RIGHT_INTAKE_ID = 10;
+    public static final int INTAKE_ID = 9;
+    //public static final int RIGHT_INTAKE_ID = 10;
 
     // CAN IDs for Feeder
-    public static final int FEEDER_ID = 11;
+    public static final int FEEDER_ID = 10;
 
     // CAN IDs for Shooter
-    public static final int LEFT_SHOOTER_ID = 12;
-    public static final int RIGHT_SHOOTER_ID = 13;
+    public static final int LEFT_SHOOTER_ID = 11;
+    public static final int RIGHT_SHOOTER_ID = 12;
 
     // CAN IDs for Climber controller+motor - TalonFX+Falcon500.
     public static final int LEFT_WINCH_TALON_FX_ID = 13;
@@ -78,12 +83,16 @@ public final class Constants {
      * Speed modifiers for Teleop
      */
     public static final double TELEOP_DRIVE_SPEED_MODIFIER = 0.40;      // for Swerve, must set > 0.2
-    public static final double SHOOTER_TARGETING_TURNING_SPEED = 0.5;
     public static final double NO_SPEED = 0.0;
     public static final double LIFT_CONTROLLER_RELEASE_SPEED = 0.25;
     public static final double LIFT_CONTROLLER_INTAKE_SPEED = -0.25;
-    public static final double SHOOTER_MAGAZINE_OUTTAKE_SPEED = 0.3;
-    public static final double INTAKE_SPEED = 0.275;
+    public static final double SHOOTER_LOW_SPEED = 0.6;
+    public static final double SHOOTER_HIGH_SPEED = 0.8;
+    public static final double INTAKE_SPEED = 0.125;
+    public static final double FEEDER_SPEED = 0.55;
+    public static final double LEFT_CLIMB_SPEED = 0.25;
+    public static final double RIGHT_CLIMB_SPEED = 0.25;
+
 
     /**
      * Motor types for the Spark Max Controller
@@ -96,9 +105,39 @@ public final class Constants {
      */
     public static final int XBOX_ASSISTANT_DRIVER_CONTROLLER_ID = 2;
     public static final int XBOX_DRIVER_CONTROLLER_PORT_ID = 3;
-    public static final int DRIVER_JOYSTICK_X_PORT_ID = 1;
-    public static final int DRIVER_JOYSTICK_Y_PORT_ID = 0;
 
     // variables
     public static boolean isTargeting = false;
+
+    public static final double DEADZONE_MAGNITUDE = 0.2;
+    public static final double LEFT_FRONT_DRIVE_SPEED_MOD = 6;
+    public static final double RIGHT_FRONT_DRIVE_SPEED_MOD = 6;
+    public static final double LEFT_BACK_DRIVE_SPEED_MOD = 6;
+    public static final double RIGHT_BACK_DRIVE_SPEED_MOD = 6;
+
+    public static final double LEFT_FRONT_STEER_SPEED_MOD = 0;
+    public static final double RIGHT_FRONT_STEER_SPEED_MOD = 0;
+    public static final double LEFT_BACK_STEER_SPEED_MOD = 0;
+    public static final double RIGHT_BACK_STEER_SPEED_MOD = 0;
+
+    public static final int LEFT_FRONT_DRIVE_POLARITY_MOD = 1;
+    public static final int RIGHT_FRONT_DRIVE_POLARITY_MOD = -1;
+    public static final int LEFT_BACK_DRIVE_POLARITY_MOD = -1;
+    public static final int RIGHT_BACK_DRIVE_POLARITY_MOD = 1;
+
+    public static final int LEFT_FRONT_STEER_POLARITY_MOD = 1;
+    public static final int RIGHT_FRONT_STEER_POLARITY_MOD = -1;
+    public static final int LEFT_BACK_STEER_POLARITY_MOD = -1;
+    public static final int RIGHT_BACK_STEER_POLARITY_MOD = -1;
+
+    public static final int RIGHT_CLIMBER_POLARITY_MOD = -1;
+    public static final int LEFT_CLIMBER_POLARITY_MOD = -1;
+    public static final int INTAKE_POLARITY_MOD = -1;
+
+    public static final int XBOX_POLARITY_MOD = -1;
+
+    public static final int DEGREE_TOLERANCE = 10;
+    public static final boolean DEBUG = true;
+
+    public static final double CLIBMER_TRIGGER_THRESHOLD = 0.7;
 }

@@ -5,9 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-//import frc.robot.subsystems.DriveTrainSubsystem;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -18,7 +20,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private static RobotContainer m_robotContainer;
+
+  private edu.wpi.first.cscore.UsbCamera intakeCamera = CameraServer.getInstance().startAutomaticCapture();
+  private edu.wpi.first.cscore.UsbCamera liftCamera = CameraServer.getInstance().startAutomaticCapture();
+
+  public static SendableChooser<String> startingPositionChooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -26,10 +33,18 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    CommandScheduler.getInstance().cancelAll();  // 2022-03-05 @10:25
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     System.out.println("DEVCHECK robotInit");
+    
+    startingPositionChooser.addOption("Move Off Line", "Move");
+    startingPositionChooser.addOption("Shoot", "Shoot");
+    startingPositionChooser.addOption("Test", "Test");
+
+    Shuffleboard.getTab("Main").add("Lift Camera", liftCamera);
+    Shuffleboard.getTab("Main").add("Intak Camera", intakeCamera);
   }
 
   /**
@@ -53,7 +68,9 @@ public class Robot extends TimedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    m_robotContainer.getAutonomousCommand().execute();
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -68,7 +85,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    m_robotContainer.getAutonomousCommand().execute();
+  }
 
   @Override
   public void teleopInit() {
@@ -85,10 +104,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    //System.out.println("ping");
+    m_robotContainer.getShooterCommand().execute();
+    m_robotContainer.getClimberCommand().execute();
+    m_robotContainer.getIntakerCommand().execute();
     m_robotContainer.getDriveTrainCommand().execute();
-    //driveTrainSubsystem.arcadeDrive(0.1, 0.1);  // 2022-02-10  devtest
-
   }
 
   @Override
@@ -100,4 +119,8 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
+
+  public static RobotContainer getRobotContainer() {
+    return m_robotContainer;
+  }
 }
