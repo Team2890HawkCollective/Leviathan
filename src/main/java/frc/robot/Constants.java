@@ -21,7 +21,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 @SuppressWarnings("unused")
 public final class Constants {
     // Kinematics measurement for Swerve Drive.
-    public static final double DISTANCE_FROM_CENTER = 0.425; // meters
+    public static final double DISTANCE_FROM_CENTER = 0.175; // meters
     public static final double RADIUS_OF_WHEEL = 0.05013; // meters
 
     // Note: The drive encoder uses 1024 ticks per revolution and is accessed by getPosition()
@@ -70,7 +70,7 @@ public final class Constants {
 
     // CAN IDs for Climber controller+motor - TalonFX+Falcon500.
     public static final int LEFT_WINCH_TALON_FX_ID = 13;
-    public static final int LEFT_CLIMBER_TALON_FX_ID = 14;
+    public static final int LEFT_CLIMBER_TALON_FX_ID = 14;  // 2022-03-09 for testing.
     public static final int RIGHT_WINCH_TALON_FX_ID = 15;
     public static final int RIGHT_CLIMBER_TALON_FX_ID = 17;
 
