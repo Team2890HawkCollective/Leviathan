@@ -1,0 +1,94 @@
+SwerveTest1 - DEV/Design notes 2022-02-14
+
+Assumptions:
+=============================
+1. RoboRIO and VSCode are all up to date ith latest libraries and firmware.
+2. Chassis is built with SwerveDrive assemblies installed and wired to CAN Bus, RoboRIO, and PDP.
+3. SparkMax controllers (4) are connected to the PDP and CAN Bus.
+4. NEO Rev-21-1850 motors are connected to SparkMax controllers (black, red, white connectors)
+
+Constraints:
+=============================
+1. SparkMax controllers must be connected via USB-C cable for settings/configuration using REV Hardware Client.
+
+Given:
+=============================
+SwerveDrive assemblies (AndyMark Swerve & Steer) use SparkMax Controllers and NEO Rev-21-1650 brushless motors.
+There are 4 assemblies.  Installed on each corner of the chassis.
+There are 2 motors per assembly
+    Drive Motor is NEO Rev-21-1650 for drive.  Encoder is the Hall-Effect encoder.
+    PG Steer motor connected to TalonSRX controller.  Lamprey Encoder connected to TalonSRX.
+There are 2 controllers per assembly.
+    REV SparkMax connected to Neo motor.
+	Phoenix TalonSRX controller connected to PG am-3009_NPPA motor.
+SwerveDrive assembly distance from center of Robot is 0.175 meters.
+NEO drive motor has encoder built-in.
+PG am-3009_NPPA steer motor 
+
+Tasks
+Hardware Device Configuration
+=============================
+1. Planning. Map CAN devices and update configuration.   Electrical Plan, Systems Diagram, etc.
+
+   Draw a picture.  (on paper or whiteboard initially)
+   Model it in a drawing tool (like Draw.io)
+
+2. Get CAN device IDs using "REV Hardware Client" software for Drive Motors.
+   For each SparkMax controller connected to NEO Rev-21-1650.
+
+3. Get CAN device IDs using "Phoenix Tuner" software for Steer Motors.
+   For each TalonSRX controller connected to PG Steer Motor am-3009_NPLU
+   Lamprey Encoder connected to TalonSRX.
+
+4. Get CAN device IDs using "Phoenix Tuner" software for "Climber-in-a-Box" motors.
+
+5. 
+   
+
+
+Programming Tasks
+=============================
+1. Update Constants.java with CAN IDs for each SparkMax controller.
+     /**
+     * IDs for Spark Max Controllers on the bot 
+     */
+    public static final int LEFT_FRONT_SPARK_MAX_ID = 4;
+    //public static final int LEFT_BACK_SPARK_MAX_ID = 2;
+    //public static final int RIGHT_FRONT_SPARK_MAX_ID = 3;
+    //public static final int RIGHT_BACK_SPARK_MAX_ID = 1;
+
+    ... etc.  Add more here... IDs of XboxController, Speed Modifiers, etc.
+	
+2. Update Robot.java teleOpPeriodic() method to add call to get DriveTrainCommand instance from RobotContainer instance.
+ /** This function is called periodically during operator control. */
+  @Override
+  public void teleopPeriodic() {
+    //System.out.println("ping");
+    m_robotContainer.getDriveTrainCommand().execute();
+  }
+
+3. Update RobotContainer.java to declare DriveTrainSubsyste and DriveTrainCommand objects.
+
+  // Connects DrivetrainSubsystem and DriveTrainCommand together
+  private final DriveTrainSubsystem m_driveTrainSubsystem = new DriveTrainSubsystem();
+  private final DriveTrainCommand m_driveTrainCommand = new DriveTrainCommand(m_driveTrainSubsystem);
+
+4. Update RobotContainer.java to add public getter returning the DriveTrainCommand object.
+
+  /**
+   * Returns the DriveTrainCommand object to run drive train during teleop
+   */
+  public Command getDriveTrainCommand() {
+    // System.out.println("DRIVE TRAIN");
+    return m_driveTrainCommand;
+  }
+  
+ 4. Update DriveTrainSubsystem class
+ 
+ ...
+ 
+ 5. Update DriveTrainCommand class
+
+ ...
+ 
+ 
